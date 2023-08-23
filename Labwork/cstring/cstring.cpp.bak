@@ -1,0 +1,49 @@
+#include <iostream>
+#include "cstring.h"
+
+unsigned int length(char str[]) {
+  // returns the length of the string including zero (0)
+  
+	int count = 0;
+	int idx = 0;
+	
+	while(str[idx] != '\0'){
+		count++;
+		idx++;
+	}
+
+	return count;
+}
+
+unsigned int find(char str[], char character) {
+  // returns 
+  //  - the index of the first occurence of character in str
+  //  - the size if the character is not found
+  
+	int idx = 0;
+	while(str[idx] != '\0'){
+		if(character == str[idx]){
+			return idx;
+		}
+		idx++;
+	}
+ 
+	return length(str);
+}
+
+bool equalStr(char str1[], char str2[]) {
+
+	if(length(str1) != length(str2)){
+		return false;
+	}
+	else{
+		int idx = 0;
+		while(str1[idx] != '\0'){
+			if(str1[idx] != str2[idx]){
+				return false;
+			}
+			idx++;
+		}
+	}
+	return true;
+}

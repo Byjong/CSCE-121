@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+using std::cin, std::cout, std::endl, std::string;
+
+int main() {
+	
+	string sentence = "";
+	string filter = "";
+	string filt_temp = "";
+	
+	cout << "Please enter the sentence: ";
+	getline(cin, sentence);
+	
+	cout << "Please enter the filter word: ";
+	cin >> filter;
+	
+	
+	for(int i = 0; i < filter.size(); i++){
+		filt_temp += "#";
+	}
+	
+	while(sentence.find(filter) != string::npos){
+		sentence.replace(sentence.find(filter), filter.length(), filt_temp);
+	}
+	
+	cout << "Filtered sentence: " << sentence << endl;
+
+    return 0;
+}

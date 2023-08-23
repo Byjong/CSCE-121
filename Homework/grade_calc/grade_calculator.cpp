@@ -1,0 +1,213 @@
+// These headers define some of the classes and functions we need
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <limits>
+
+// ONLY MAKE CHANGES WHERE THERE IS A TODO
+
+// These using declarations let us refer to things more simply
+// e.g. instead of "std::cin" we can just write "cin"
+using std::cin, std::cout, std::endl;
+using std::string, std::getline;
+
+// These methods are defined below the main function
+
+// print instructions for inputting grades
+void print_instructions();
+
+// pretty print a summary of the grades
+void print_results(double exam_average,
+                   double hw_average,
+                   double lw_average,
+                   double reading,
+                   double engagement,
+                   double weighted_total,
+                   char final_letter_grade);
+
+// YOU ARE NOT EXPECTED TO UNDERSTAND THIS ONE... YET
+// extract the category and score from the line
+// and store the values in the provided variables
+// if line := "exam 95", then category := "exam" and score := 95
+// if the line is invalid, then category := "ignore"
+void get_category_and_score(const string& line,
+                            string* category,
+                            double* score);
+
+int main() {
+    print_instructions();
+
+    // ONLY MAKE CHANGES WHERE THERE IS A TODO
+
+    double final_exam = 0;
+	
+	double exam_total = 0;
+    double hw_total = 0;
+    double lw_total = 0;
+    double reading_total = 0;
+    double engage_total = 0;
+	
+	int num_exam = 0;
+	int num_hw = 0;
+	int num_lw = 0;
+	int num_reading = 0;
+	int num_engage = 0;
+
+    string line;
+    // read one line from standard input (discards the ending newline character)
+    getline(cin, line);
+    // read lines until an empty line is read
+    while (!line.empty()) {
+        string category;
+        double score;
+        get_category_and_score(line, &category, &score);
+
+        // process the grade entry
+       if (category == "exam") {
+            exam_total += score;
+			
+        } else if (category == "final-exam") {
+            final_exam = score;
+			exam_total += score;
+			
+        } else if (category == "hw") { 
+            hw_total += score;
+			num_hw++;
+			
+        } else if (category == "lw") {				
+            if (score != 0){
+				lw_total += 100;
+			}
+			num_lw++;
+			
+        } else if (category == "reading") {
+            reading_total += score;
+			num_reading++;
+			
+        } else if (category == "engagement") {		
+            engage_total += score;
+			num_engage++;
+			
+        } else {
+            cout << "ignored invalid input" << endl;
+        }
+
+        // get the next line from standard input
+        getline(cin, line);
+    }
+
+    double exam_average = 0;
+    double hw_average = 0;
+    double lw_average = 0;
+    double reading = 0;
+    double engagement = 0;
+	
+	exam_average = exam_total / 3;
+	
+	if (final_exam > exam_average){
+		exam_average = final_exam;
+	}
+	
+	if (num_hw > 0){
+		hw_average = hw_total / num_hw;
+	}
+	if (num_lw > 0){
+		lw_average = lw_total / num_lw;
+	}
+	if (num_reading > 0){
+		reading = reading_total / num_reading;
+	}
+	if (num_engage > 0){
+		engagement = engage_total / num_engage;
+	}
+	
+	reading += 15;
+	engagement += 15;
+	
+	if (reading > 100){
+		reading = 100;
+	}
+	if (engagement > 100){
+		engagement = 100;
+	}
+
+    
+	double weighted_total = 0;
+	weighted_total = (0.4 * exam_average) + (0.4 * hw_average) + (0.1 * lw_average) + (0.05 * reading) + (0.05 * engagement);
+
+    // TODO(student): compute final letter grade
+    char final_letter_grade = 'X';
+	
+	if (weighted_total >= 90){
+		final_letter_grade = 'A';
+	}
+	else if (weighted_total >= 80){
+		final_letter_grade = 'B';
+	}
+	else if (weighted_total >= 70){
+		final_letter_grade = 'C';
+	}
+	else if (weighted_total >= 60){
+		final_letter_grade = 'D';
+	}
+	else{
+		final_letter_grade = 'F';
+	}
+
+    print_results(
+        exam_average, hw_average, lw_average, reading, engagement,
+        weighted_total, final_letter_grade);
+}
+
+// These methods are already implemented for you
+// You should not need to modify them
+
+void print_instructions() {
+    cout << "enter grades as <category> <score>" << endl;
+    cout << "  <category> := exam | final-exam | hw | lw | reading | engagement" << endl;
+    cout << "     <score> := numeric value" << endl;
+    cout << "enter an empty line to end input" << endl;
+}
+
+void get_category_and_score(
+    const string& line,
+    string* category,
+    double* score) {
+    // turn the string into an input stream
+    std::istringstream sin(line);
+
+    // read the category (as string) and score (as double) from the stream
+    sin >> *category;
+    sin >> *score;
+
+    if (sin.fail()) {
+        // the stream is in a fail state (something went wrong)
+        // clear the flags
+        sin.clear();
+        // clear the stream buffer (throw away whatever garbage is in there)
+        sin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        // signal that the line was invalid
+        *category = "ignore";
+    }
+}
+
+void print_results(
+    double exam_average,
+    double hw_average,
+    double lw_average,
+    double reading,
+    double engagement,
+    double weighted_total,
+    char final_letter_grade) {
+    cout << "summary:" << endl;
+    cout << "      exam average: " << exam_average << endl;
+    cout << "        hw average: " << hw_average << endl;
+    cout << "        lw average: " << lw_average << endl;
+    cout << "           reading: " << reading << endl;
+    cout << "        engagement: " << engagement << endl;
+    cout << "    ---------------" << endl;
+
+    cout << "    weighted total: " << weighted_total << endl;
+
+    cout << "final letter grade: " << final_letter_grade << endl;
+}

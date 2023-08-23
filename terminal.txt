@@ -1,0 +1,7 @@
+cd /mnt/c/Users/BJMin/CSCE_121/Exam/final_exam
+
+cd /mnt/c/Users/BJMin/CSCE_121/Labwork/state_park
+
+g++ -std=c++17 -Wall -Wextra -pedantic -Weffc++ *.cpp
+
+g++ -std=c++17 -Wall -Wextra -pedantic -g -fsanitize=address,undefined Network.cpp User.cpp Post.cpp Tag.cpp Cppeers-main.cpp

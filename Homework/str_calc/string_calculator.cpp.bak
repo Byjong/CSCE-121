@@ -1,0 +1,196 @@
+#include <iostream>
+#include <string>
+#include "./string_calculator.h"
+
+using std::cout, std::endl;
+using std::string;
+
+unsigned int digit_to_decimal(char digit) {
+	int num = digit;
+	if(num < 48 || num > 57){
+		throw std::invalid_argument("Invalid argument.");
+	}
+	num -= '0'; 
+    return num;
+}
+
+char decimal_to_digit(unsigned int decimal) {
+	if((decimal / 10) != 0){
+		throw std::invalid_argument("Invalid argument.");
+	}
+	else{
+		decimal += '0';
+	}
+    return static_cast<char>(decimal);
+}
+
+string trim_leading_zeros(string num) {
+	
+	bool is_neg = false;
+	
+	if(num.find('-') != std::string::npos){
+		num.erase(0, 1);
+		is_neg = true;
+	}
+	
+	if(num.find_first_not_of('0') == std::string::npos){
+		return "0";
+	}
+	
+	num.erase(0, num.find_first_not_of('0'));
+	
+	if(is_neg == true){
+		num.insert(0, "-");
+	}
+	
+    return num;
+}
+
+string add(string lhs, string rhs) {
+	
+	bool is_neg = false;
+	
+	lhs = trim_leading_zeros(lhs);
+	rhs = trim_leading_zeros(rhs);
+	
+	if(lhs.find('-') != std::string::npos && rhs.find('-') != std::string::npos){
+		lhs.erase(0, 1);
+		rhs.erase(0, 1);
+		is_neg = true;
+	}
+	
+	if(rhs.length() > lhs.length()){
+		while(rhs.length() != lhs.length()){
+			lhs.insert(0, "0");
+		}
+	}
+	else if(lhs.length() > rhs.length()){
+		while(rhs.length() != lhs.length()){
+			rhs.insert(0, "0");
+		}
+	}
+	
+	char carry = '\0';
+	char digit = '\0';
+	string result = "";
+	string temp = "";
+	
+	for(int i = rhs.length() - 1; i >= 0; i--){
+		temp = "";
+		
+		char a = lhs.at(i) - '0';
+		char b = rhs.at(i) - '0';
+		
+		
+		
+		if((a + b + carry) > 9){
+			digit = (a + b + carry) % 10;
+			carry = (a + b + carry)/10;
+		}
+		else{
+			digit = (a + b + carry) % 10;
+			carry = 0; 
+		}
+		
+		digit += '0';
+		
+		temp.push_back(digit);
+		
+		result.insert(0, temp);
+	}
+	
+	if(carry != 0){
+		result.insert(0, "1");
+	}
+	
+	if(is_neg == true){
+		result.insert(0, "-");
+	}
+	
+    return result;
+}
+
+string multiply(string lhs, string rhs) {
+	
+	bool is_neg = false;
+	
+	lhs = trim_leading_zeros(lhs);
+	rhs = trim_leading_zeros(rhs);
+	
+	if(lhs.find('-') != std::string::npos){
+		if(rhs.find('-') != std::string::npos){
+			lhs.erase(0, 1);
+			rhs.erase(0, 1);
+		}
+		else{
+			lhs.erase(0, 1);
+			is_neg = true;
+		}
+	}
+	else if(rhs.find('-') != std::string::npos){
+		rhs.erase(0, 1);
+		is_neg = true;
+	}
+
+	char carry = '\0';
+	char digit = '\0';
+	string final_result = "0";
+	int num_pos = 0;
+	
+	for(int i = lhs.length() - 1; i >= 0; i--){
+		char a = lhs.at(i) - '0';
+		string curr_result = "";
+		
+		for(int j = rhs.length() - 1; j >= 0; j--){
+			char b = rhs.at(j) - '0';
+			
+			if(((a * b) + carry) > 9){
+				digit = ((a * b) + carry) % 10;
+				carry = ((a * b) + carry) / 10;
+			}
+			else{
+				digit = ((a * b) + carry) % 10;
+				carry = 0; 
+			}
+			
+			digit += '0';
+			
+			curr_result.insert(0, 1, digit);
+		}
+		
+		num_pos++;
+
+		for(int k = 0; k < (num_pos - 1); k++){
+			curr_result.append("0");
+		}
+		
+		if(carry != 0){
+			carry += '0';
+			curr_result.insert(0, 1, carry);
+			carry = 0;
+		}
+		
+		final_result = add(final_result, curr_result);
+		
+	}
+	
+	
+	if(carry != 0){
+		carry += '0';
+		final_result.insert(0, 1, carry);
+	}
+	
+	if(is_neg == true){
+		final_result.insert(0, "-");
+	}
+	
+    return final_result;
+}
+
+
+int main(){
+
+	cout << multiply("-00001265", "-000801") << endl;
+	
+	return 0;
+}

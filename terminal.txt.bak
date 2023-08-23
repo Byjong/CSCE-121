@@ -1,0 +1,5 @@
+cd /mnt/c/Users/BJMin/HW/exam_1_review
+
+cd /mnt/c/Users/BJMin/Labwork/cstring
+
+g++ -std=c++17 -Wall -Wextra -pedantic -Weffc++ *.cpp

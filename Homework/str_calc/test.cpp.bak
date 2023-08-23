@@ -1,0 +1,72 @@
+#include <iostream>
+#include <string>
+#include "./string_calculator.h"
+#include <assert.h>
+
+using std::cin, std::cout, std::endl, std::string;
+
+/*
+void test_deci_digit(unsigned int num, char predict){
+	char actual = decimal_to_digit(num);
+	cout << "Input: " << num << endl;
+	cout << "Predict: " << predict << endl;
+	cout << "Actual: " << actual << endl;
+	assert(predict == actual);
+	cout << endl;
+}
+
+/*	
+void test_digit_deci(char num, int predict){
+	int actual = digit_to_decimal(num);
+	cout << "Input: " << num << endl;
+	cout << "Predict: " << predict << endl;
+	cout << "Actual: " << actual << endl;
+	assert(predict == actual);
+	cout << endl;
+}
+
+*/
+void test_trim(string num, string predict){
+	string actual = trim_leading_zeros(num);
+	cout << "Input: " << num << endl;
+	cout << "Predict: " << predict << endl;
+	cout << "Actual: " << actual << endl;
+	assert(predict == actual);
+	cout << endl;
+}
+
+
+void test_add(string num1, string num2, string predict){
+	string actual = add(num1, num2);
+	cout << "Input: " << num1 << " + " << num2 << endl;
+	cout << "Predict: " << predict << endl;
+	cout << "Actual: " << actual << endl;
+	assert(predict == actual);
+	cout << endl;
+}
+
+/*
+void test_mult(){
+	string actual = multiply(num1, num2);
+	cout << "Input: " << num1 << " * " << num2 << endl;
+	cout << "Predict: " << predict << endl;
+	cout << "Actual: " << actual << endl;
+	assert(predict == actual);
+	cout << endl;
+}
+*/
+
+int main(){
+	
+	//test_deci_digit(10, '1');
+	
+	//test_digit_deci('1', 1);
+	
+	//test_trim("2", "2");
+	
+	//test_add("2", "9", "11");
+	
+	//test_mult();
+	
+	return 0;
+}

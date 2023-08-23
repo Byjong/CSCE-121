@@ -1,0 +1,82 @@
+#include <iostream>
+#include <string>
+#include <stdexcept>
+#include <cmath>
+
+using std::cout, std::endl, std::cin;
+
+/* Since you are returning an int, if left and right don't have the same number of digits.
+Then the remaining comparisons can be assumed to be 0 since AND of any value and 0 is 0;
+Since any digit that is less than 8 digits must have leading zero. The remaining comparisons
+for the difference in length of left and right can be assumed 0 and don't need to be calculated
+as the int data type doesn't include leading zeros.
+*/
+
+int digitwise_and(int left, int right){
+	
+	int temp1 = left;
+	int temp2 = right;
+	int len_l = 0;
+	int len_r = 0;
+	int num = 0;
+	
+	while(temp1 != 0){
+		temp1 /= 10;
+		len_l++;
+	}
+	while(temp2 != 0){
+		temp2 /= 10;
+		len_r++;
+	}
+	
+	if(len_l > 8 || len_r > 8){
+		throw std::invalid_argument("Invalid argument.");
+	}
+	
+	if(len_l <= len_r){
+		int digit_count = 1;
+		for(int i = 0; i < len_l; i++){
+			int l_digit = left % 10;
+			left /= 10;
+			int r_digit = right % 10;
+			right /= 10;
+			
+			int digit = (l_digit) && (r_digit);
+			num += (digit * pow(10, digit_count));
+			cout << digit << endl;		//TESTING
+			digit_count++;
+		}
+	}
+	
+	if(len_r < len_l){
+		int digit_count = 1;
+		for(int i = 0; i < len_r; i++){
+			int l_digit = left % 10;
+			left /= 10;
+			int r_digit = right % 10;
+			right /= 10;
+			
+			int digit = (l_digit) && (r_digit);
+			cout << digit << endl;		//TESTING
+			num += (digit * pow(10, digit_count));
+			digit_count++;
+		}
+	}
+	
+	num /= 10;
+	return num;
+}
+
+int main(){
+	
+	int num1 = 0;
+	int num2 = 0;
+	
+	cout << "Num1: ";
+	cin >> num1;
+	cout << "Num2: ";
+	cin >> num2;
+	cout << endl;
+	
+	cout << digitwise_and(num1, num2) << endl;
+}
